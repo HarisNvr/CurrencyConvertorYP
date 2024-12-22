@@ -1,19 +1,33 @@
-from json import dump
+from json import dumps
 from typing import Any, Dict
 
-from dotenv import load_dotenv
+from redis import Redis, ConnectionError
 from requests import get
 
-from .constants import API_KEY, BASE_URL, MAJOR_CURRENCIES, OUTPUT_FILE
-
-load_dotenv()
+from api.constants import (
+    API_KEY, BASE_URL, MAJOR_CURRENCIES, REDIS_HOST, REDIS_PORT, REDIS_DB
+)
 
 
 def get_rates(base_currency: str) -> Dict[str, Any]:
-    api_url = f'{BASE_URL}/{API_KEY}/latest/{base_currency}'
+    """
+    Fetches the latest currency conversion rates for the specified base
+    currency.
+
+    The function makes a request to the API, retrieves exchange rates and
+    related information, and parses the data into a dictionary containing the
+    base currency code, conversion rates, and the last update timestamp.
+
+    :param base_currency: The base currency for which to fetch exchange
+                          rates (e.g., "USD").
+    :return: A dictionary with the base currency code, conversion rates, and
+             the last update timestamp.
+    """
+
+    api_url = f'{BASE_URL}/{API_KEY}/{base_currency}'
     response = get(api_url)
     response.raise_for_status()
-    data = response.json()
+    data = dict(response.json())
 
     parsed_data = {
         'base_code': data.get('base_code'),
@@ -24,22 +38,45 @@ def get_rates(base_currency: str) -> Dict[str, Any]:
     return parsed_data
 
 
+def save_current_rate(currency_name: str, currency_rate: dict) -> None:
+    """
+    Saves the current exchange rate for a given currency into Redis.
+
+    :param currency_name: The name of the currency as the key in Redis.
+    :param currency_rate: The exchange rate to be stored, represented as a
+                          dictionary.
+    """
+
+    redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
+
+    try:
+        redis_client.ping()
+        print("Connected to Redis!")
+    except ConnectionError:
+        print("Could not connect to Redis.")
+        return
+
+    serialized_rate = dumps(currency_rate)
+    redis_client.set(currency_name, serialized_rate)
+    redis_client.close()
+
+
 def get_and_save_all_rates() -> None:
-    all_rates = {}
+    """
+    Fetches and saves exchange rates for all major currencies.
+
+    The function iterates through a list of major currencies, retrieves the
+    latest exchange rates for each currency using the `get_rates` function,
+    and saves the data to Redis and PostgreSQL databases.
+
+    :return: None
+    """
 
     for currency in MAJOR_CURRENCIES:
+        parsed_data = get_rates(currency)
+        save_current_rate(
+            currency_name=parsed_data['base_code'],
+            currency_rate=parsed_data['conversion_rates']
+        )
 
-        try:
-            rates = get_rates(currency)
-            if rates:
-                all_rates[currency] = rates
-            else:
-                print(f'Ошибка: данные для {currency} отсутствуют.')
-
-        except Exception as e:
-            print(f'Ошибка при запросе для {currency}: {e}')
-
-    with open(OUTPUT_FILE, 'w') as file:
-        dump(all_rates, file, indent=4)
-
-    print('Данные успешно сохранены в JSON файл.')
+        # PostgreSQL saving func
