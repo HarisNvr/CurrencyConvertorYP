@@ -1,0 +1,10 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    command: redis-server --appendonly yes --save 60 1 --dir /data
+    volumes:
+      - ./redis-data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
