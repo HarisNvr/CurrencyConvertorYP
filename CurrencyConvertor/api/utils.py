@@ -1,27 +1,30 @@
-import json
-import os
+from json import dump
+from typing import Any, Dict
 
-import requests
 from dotenv import load_dotenv
+from requests import get
+
+from .constants import API_KEY, BASE_URL, MAJOR_CURRENCIES, OUTPUT_FILE
 
 load_dotenv()
 
-API_KEY = os.getenv('EXCHANGE_RATE_API_KEY')
-BASE_URL = 'https://v6.exchangerate-api.com/v6'
-OUTPUT_FILE = 'api/exchange_rates.json'
 
-MAJOR_CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'RUB']
-
-
-def get_rates(base_currency):
+def get_rates(base_currency: str) -> Dict[str, Any]:
     api_url = f'{BASE_URL}/{API_KEY}/latest/{base_currency}'
-    response = requests.get(api_url)
+    response = get(api_url)
     response.raise_for_status()
     data = response.json()
-    return data.get('conversion_rates', {})
+
+    parsed_data = {
+        'base_code': data.get('base_code'),
+        'conversion_rates': data.get('conversion_rates', {}),
+        'time_last_update_utc': data.get('time_last_update_utc')
+    }
+
+    return parsed_data
 
 
-def get_and_save_all_rates():
+def get_and_save_all_rates() -> None:
     all_rates = {}
 
     for currency in MAJOR_CURRENCIES:
@@ -37,6 +40,6 @@ def get_and_save_all_rates():
             print(f'Ошибка при запросе для {currency}: {e}')
 
     with open(OUTPUT_FILE, 'w') as file:
-        json.dump(all_rates, file, indent=4)
+        dump(all_rates, file, indent=4)
 
     print('Данные успешно сохранены в JSON файл.')

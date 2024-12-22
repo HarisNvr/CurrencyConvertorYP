@@ -1,16 +1,15 @@
-import json
+from json import load
 
 from django.http import HttpResponse, JsonResponse
 
-# from django.shortcuts import render
-OUTPUT_FILE = 'api/exchange_rates.json'
+from .constants import OUTPUT_FILE
 
 
 def currency_rates_view(request):
 
     try:
         with open(OUTPUT_FILE, 'r') as file:
-            data = json.load(file)
+            data = load(file)
     except FileNotFoundError:
         return HttpResponse('Файл с курсами валют не найден.', status=404)
 
