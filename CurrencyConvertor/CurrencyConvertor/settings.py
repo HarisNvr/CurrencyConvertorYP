@@ -1,19 +1,18 @@
-import os
+from os import getenv
 from pathlib import Path
+
+from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'default')
+SECRET_KEY = getenv('SECRET_KEY', get_random_secret_key())
 
-DEBUG = os.getenv('DEBUG', 'True')
+DEBUG = getenv('DEBUG', '').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost 127.0.0.1').split(' ')
-
-
-# Application definition
+ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', '*').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,15 +56,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'CurrencyConvertor.wsgi.application'
 
 
-if os.getenv('POSTGRES_DB'):
+if getenv('ENABLE_POSTGRES_DB', '').lower() == 'true':
     DATABASES = {
         'default': {
-            'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
-            'NAME': os.getenv('POSTGRES_DB'),
-            'USER': os.getenv('POSTGRES_USER'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-            'PORT': os.getenv('DB_PORT', 5432),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': getenv('POSTGRES_DB'),
+            'USER': getenv('POSTGRES_USER'),
+            'PASSWORD': getenv('POSTGRES_PASSWORD'),
+            'HOST': getenv('DB_HOST'),
+            'PORT': getenv('DB_PORT')
         }
     }
 else:
@@ -93,14 +92,17 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'en-US'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'collected_static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

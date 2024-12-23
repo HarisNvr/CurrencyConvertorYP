@@ -1,3 +1,6 @@
+volumes:
+  pg_data:
+
 services:
   redis:
     image: redis:latest
@@ -8,3 +11,11 @@ services:
     ports:
       - "6379:6379"
     restart: unless-stopped
+  db:
+    image: postgres:17
+    container_name: postgresql-container
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
