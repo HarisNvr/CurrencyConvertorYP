@@ -4,6 +4,7 @@ from typing import Any, Dict
 from redis import Redis, ConnectionError
 from requests import get
 
+from currencys.models import Currency
 from api.constants import (
     API_KEY, BASE_URL, MAJOR_CURRENCIES, REDIS_HOST, REDIS_PORT, REDIS_DB
 )
@@ -24,7 +25,7 @@ def get_rates(base_currency: str) -> Dict[str, Any]:
              the last update timestamp.
     """
 
-    api_url = f'{BASE_URL}/{API_KEY}/{base_currency}'
+    api_url = f'{BASE_URL}/{API_KEY}/latest/{base_currency}'
     response = get(api_url)
     response.raise_for_status()
     data = dict(response.json())
@@ -61,6 +62,28 @@ def save_current_rate(currency_name: str, currency_rate: dict) -> None:
     redis_client.close()
 
 
+def save_current_history(name: str, rates: dict, date: Any) -> None:
+    """
+    Saves the course history in data base Postgres.
+
+    :param name: The name of the currency.
+    :param rates: The exchange rate to be stored, represented as a
+                          dictionary.
+    :param date: The last update date.
+    """
+    try:
+        print(rates)
+        Currency.objects.create(
+            name=name[0],
+            rates=rates,
+            date=date,
+        )
+    except Exception as error:
+        print(f"Don`t save in data base:{error}.")
+        return
+    print('Загружено')
+    
+
 def get_and_save_all_rates() -> None:
     """
     Fetches and saves exchange rates for all major currencies.
@@ -74,9 +97,11 @@ def get_and_save_all_rates() -> None:
 
     for currency in MAJOR_CURRENCIES:
         parsed_data = get_rates(currency)
-        save_current_rate(
-            currency_name=parsed_data['base_code'],
-            currency_rate=parsed_data['conversion_rates']
-        )
+        currency_name = parsed_data['base_code'],
+        currency_rate = parsed_data['conversion_rates'],
+        currency_date = parsed_data['time_last_update_utc']
+        #save_current_rate(currency_name, currency_rate)
+        save_current_history(currency_name, currency_rate, currency_date)
 
-        # PostgreSQL saving func
+
+get_and_save_all_rates()
