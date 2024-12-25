@@ -145,3 +145,4 @@ dmypy.json
 .mypy_cache
 
 # Other stuff
+./redis-data

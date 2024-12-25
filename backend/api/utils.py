@@ -1,12 +1,13 @@
 from json import dumps
 from typing import Any, Dict
 
-from redis import Redis, ConnectionError
+from redis import Redis
 from requests import get
 
-from api.constants import (
+from CurrencyConvertor.settings import (
     API_KEY, BASE_URL, MAJOR_CURRENCIES, REDIS_HOST, REDIS_PORT, REDIS_DB
 )
+from forex.models import Course
 
 
 def get_rates(base_currency: str) -> Dict[str, Any]:
@@ -24,7 +25,7 @@ def get_rates(base_currency: str) -> Dict[str, Any]:
              the last update timestamp.
     """
 
-    api_url = f'{BASE_URL}/{API_KEY}/{base_currency}'
+    api_url = f'{BASE_URL}/{API_KEY}/latest/{base_currency}'
     response = get(api_url)
     response.raise_for_status()
     data = dict(response.json())
@@ -49,13 +50,6 @@ def save_current_rate(currency_name: str, currency_rate: dict) -> None:
 
     redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
-    try:
-        redis_client.ping()
-        print("Connected to Redis!")
-    except ConnectionError:
-        print("Could not connect to Redis.")
-        return
-
     serialized_rate = dumps(currency_rate)
     redis_client.set(currency_name, serialized_rate)
     redis_client.close()
@@ -72,11 +66,19 @@ def get_and_save_all_rates() -> None:
     :return: None
     """
 
+    course_dict = {}
+
     for currency in MAJOR_CURRENCIES:
         parsed_data = get_rates(currency)
+
+        base_code = parsed_data['base_code']
+        conversion_rates = parsed_data['conversion_rates']
+
         save_current_rate(
-            currency_name=parsed_data['base_code'],
-            currency_rate=parsed_data['conversion_rates']
+            currency_name=base_code,
+            currency_rate=conversion_rates
         )
 
-        # PostgreSQL saving func
+        course_dict[base_code] = conversion_rates
+
+    Course.objects.create(rates=course_dict)
