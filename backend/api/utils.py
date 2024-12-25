@@ -7,7 +7,7 @@ from requests import get
 from CurrencyConvertor.settings import (
     API_KEY, BASE_URL, MAJOR_CURRENCIES, REDIS_HOST, REDIS_PORT, REDIS_DB
 )
-from forex.utils import save_current_history
+from forex.models import Course
 
 
 def get_rates(base_currency: str) -> Dict[str, Any]:
@@ -81,4 +81,4 @@ def get_and_save_all_rates() -> None:
 
         course_dict[base_code] = conversion_rates
 
-    save_current_history(course_dict)
+    Course.objects.create(rates=course_dict)
