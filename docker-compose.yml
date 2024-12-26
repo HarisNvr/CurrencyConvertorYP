@@ -1,23 +1,50 @@
 volumes:
   redis_data:
   pg_data:
+  static:
 
 services:
   redis:
     image: redis:latest
     container_name: redis-container
     command: redis-server --appendonly yes --save 60 1 --dir /data
+    ports:
+      - 6379:6379
     volumes:
       - redis_data:/data
-    ports:
-      - "6379:6379"
     restart: unless-stopped
-  db:
+
+  postgres:
     image: postgres:17
     container_name: postgresql-container
-    env_file: .env
+    ports:
+      - 5432:5432
     volumes:
       - pg_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    env_file: .env
     restart: unless-stopped
+    depends_on:
+      - redis
+
+  backend:
+    environment:
+      DB_HOST: postgres
+      REDIS_HOST: redis
+    build: ./backend/
+    volumes:
+      - static:/backend_static
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  gateway:
+    build: ./nginx/
+    ports:
+      - 8000:80
+    volumes:
+      - static:/staticfiles/
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - backend
