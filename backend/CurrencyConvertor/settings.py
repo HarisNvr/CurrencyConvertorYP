@@ -114,6 +114,6 @@ HASH_URL = getenv('HASH_URL')
 
 MAJOR_CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'RUB']
 
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
+REDIS_HOST = getenv('REDIS_HOST')
+REDIS_PORT = getenv('REDIS_PORT')
+REDIS_DB = getenv('REDIS_DB')
