@@ -46,7 +46,7 @@ def currency_rates_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     return JsonResponse({base_currency: rates})
 
 
-def update_course_db() -> HttpResponse:
+def update_course_db(request: HttpRequest) -> HttpResponse:
     """
     Updates the exchange rates in the database.
 
