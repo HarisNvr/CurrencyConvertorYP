@@ -1,6 +1,6 @@
 from CurrencyConvertor.celery import app
 
-from backend.api.utils import get_and_save_all_rates
+from api.utils import get_and_save_all_rates
 
 
 @app.task
