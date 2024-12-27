@@ -13,8 +13,8 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    "update_rate_every_single_hour": {
+    "update_rate_every_single_day": {
         "task": "api.tasks.update_course_db_task",
-        "schedule": crontab(minute=10, hour="*/1"),
+        "schedule": crontab(minute=40, hour=0, day_of_week="*"),
     },
 }
