@@ -50,6 +50,9 @@ services:
       - backend
 
   celery-worker:
+    environment:
+      DB_HOST: postgres
+      REDIS_HOST: redis
     build: ./backend/
     container_name: celery-worker-container
     command: celery -A CurrencyConvertor.celery worker -l INFO
@@ -59,6 +62,9 @@ services:
       - postgres
 
   celery-beat:
+    environment:
+      DB_HOST: postgres
+      REDIS_HOST: redis
     build: ./backend/
     container_name: celery-beat-container
     command: celery -A CurrencyConvertor.celery beat -l INFO
