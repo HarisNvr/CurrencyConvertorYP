@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
-CMD ["gunicorn", "--bind", "0:8000", "CurrencyConvertor.wsgi"]
+CMD ["sh", "-c", "python3 manage.py migrate && gunicorn --bind 0.0.0.0:8000 CurrencyConvertor.wsgi"]
