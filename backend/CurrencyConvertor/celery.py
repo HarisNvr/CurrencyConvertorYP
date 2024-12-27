@@ -11,6 +11,7 @@ app = Celery(
 )
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
+app.conf.enable_utc = True
 
 app.conf.beat_schedule = {
     "update_rate_every_single_day": {
