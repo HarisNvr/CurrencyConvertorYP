@@ -38,6 +38,19 @@ services:
     depends_on:
       - postgres
 
+  frontend:
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build: ./frontend/
+    command: cp -r /app/dist/. /frontend_static/
+    # volumes:
+    #  - static:/frontend_static
+    volumes:
+      - static:/app/dist
+    env_file: .env
+    depends_on:
+      - postgres
+
   gateway:
     build: ./nginx/
     ports:

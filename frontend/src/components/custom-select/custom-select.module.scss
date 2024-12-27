@@ -1,0 +1,91 @@
+@use '../../styles/variables' as *;
+
+.select {
+	position: relative;
+	width: 152px;
+	padding: 26px 16px;
+	color: $font-color;
+	font-size: $main-text-size;
+	background-color: $bg-input;
+	border-radius: 16px;
+	cursor: pointer;
+
+	&::placeholder {
+		color: $placeholder;
+	}
+
+	&_container {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		&_item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+
+			&_flag {
+				width: 28px;
+				height: 28px;
+				border-radius: 28px;
+				object-fit: cover;
+				object-position: center;
+			}
+
+			&_label {
+				font-weight: $font-weight-semi-bold;
+			}
+		}
+	}
+}
+
+.select_open {
+	border-radius: 16px 16px 0 0;
+}
+
+.options {
+	position: absolute;
+	top: 100%; /* Позиционируем под контейнером */
+	left: 0;
+	z-index: 100;
+	display: none;
+	width: 100%;
+	max-height: 120px;
+	overflow-y: auto;
+	background-color: $bg-input;
+	box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+	transform: translateY(-5%);
+	opacity: 0;
+	transition:
+		opacity 0.3s ease,
+		transform 0.3s ease;
+}
+
+.options_open {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding-block-end: 16px;
+	padding-inline-start: 16px;
+	border-radius: 0 0 16px 16px;
+	transform: translateY(0);
+	opacity: 1;
+}
+
+.options::-webkit-scrollbar {
+	width: 8px;
+}
+
+.options::-webkit-scrollbar-track {
+	background: $bg-input;
+}
+
+.options::-webkit-scrollbar-thumb {
+	background-color: $disabled;
+	border-radius: 10px;
+}
+
+.options::-webkit-scrollbar-thumb:hover {
+	background-color: $placeholder;
+}

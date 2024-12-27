@@ -1,0 +1,54 @@
+@use '../../styles/variables' as *;
+
+.container_chart {
+	position: relative;
+	width: 1200px;
+	padding: 52px 52px 42px;
+	background-color: $white;
+	border-radius: 32px;
+}
+
+.button_container {
+	position: absolute;
+	z-index: 10;
+	display: flex;
+	gap: 8px;
+}
+
+.button {
+	padding: 8px 20px;
+	font-size: $main-text-size;
+	background-color: $bg-input;
+	border-radius: 12px;
+}
+
+.active {
+	color: white;
+	background-color: $accent-color;
+}
+
+.icon_notification {
+	position: absolute;
+	top: -8px;
+	right: -5px;
+}
+
+.info_block {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.text {
+	visibility: hidden;
+	opacity: 0;
+	transition:
+		opacity 0.3s ease,
+		visibility 0.3s ease;
+}
+
+.info_block:hover .text {
+	visibility: visible;
+	opacity: 1;
+}
