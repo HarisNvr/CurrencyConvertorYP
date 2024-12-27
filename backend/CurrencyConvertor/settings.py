@@ -1,4 +1,4 @@
-from os import getenv
+from os import getenv, path
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
@@ -117,3 +117,9 @@ MAX_AMOUNT = 1000000000000
 REDIS_HOST = getenv('REDIS_HOST')
 REDIS_PORT = getenv('REDIS_PORT')
 REDIS_DB = getenv('REDIS_DB')
+CELERY_REDIS_DB = getenv('CELERY_REDIS_DB')
+
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{CELERY_REDIS_DB}'
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/{CELERY_REDIS_DB}'
+
+LOG_FILE = path.join(BASE_DIR, 'log.json')
