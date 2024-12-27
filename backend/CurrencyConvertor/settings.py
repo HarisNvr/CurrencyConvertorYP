@@ -1,5 +1,4 @@
-from os import getenv
-import os
+from os import getenv, path
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
@@ -123,4 +122,4 @@ CELERY_REDIS_DB = 1
 CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{CELERY_REDIS_DB}'
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/{CELERY_REDIS_DB}'
 
-LOG_FILE = os.path.join(BASE_DIR, 'log.json')
+LOG_FILE = path.join(BASE_DIR, 'log.json')
