@@ -4,7 +4,7 @@ from json import dumps
 from api.utils import get_and_save_all_rates
 from CurrencyConvertor.celery import app
 
-from backend.CurrencyConvertor.settings import LOG_FILE
+from CurrencyConvertor.settings import LOG_FILE
 
 
 def log_to_json(message):
