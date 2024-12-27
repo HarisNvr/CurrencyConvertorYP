@@ -1,12 +1,11 @@
-from json import loads, JSONDecodeError
-
 from django.http import HttpResponse, JsonResponse, HttpRequest
-from redis import Redis
+from django.views.decorators.http import require_GET
 
-from CurrencyConvertor.settings import REDIS_HOST, REDIS_PORT, REDIS_DB
-from api.utils import get_and_save_all_rates
+from CurrencyConvertor.settings import MAX_AMOUNT
+from api.utils import get_current_rate
 
 
+@require_GET
 def currency_rates_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     """
     Handles a request to retrieve currency exchange rates for a specified base
@@ -18,59 +17,72 @@ def currency_rates_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     response. On success, the function responds with a JSON containing the
     exchange rates.
 
-    :param request: The HTTP request containing the 'base' currency parameter
-                    in the query string.
+    :param request: An HttpRequest object.
     :return: An HttpResponse or JsonResponse with the exchange rates or an
              error message.
     """
 
-    redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-
     base_currency = request.GET.get('base')
 
-    rates = redis_client.get(base_currency)
-    if not rates:
-        return HttpResponse(
-            f'Курсы для валюты {base_currency} не найдены.',
-            status=404
-        )
-    redis_client.close()
+    result = get_current_rate(base_currency)
 
-    try:
-        rates = loads(rates.decode())
-    except (UnicodeDecodeError, JSONDecodeError):
-        return HttpResponse(
-            'Ошибка при чтении данных из Redis.', status=500
-        )
-
-    return JsonResponse({base_currency: rates})
+    if isinstance(result, HttpResponse):
+        return result
+    else:
+        return JsonResponse({base_currency: result})
 
 
-def update_course_db(request: HttpRequest) -> HttpResponse:
+@require_GET
+def convert_currency_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     """
-    Updates the exchange rates in the database.
+    Converts a specified amount from one currency to another based on current
+    exchange rates.
 
-    This view function is triggered by a request to a specific URL and calls
-    the `get_and_save_all_rates` function to fetch and save the latest exchange
-    rates. If the update is successful, it returns a 200 response indicating
-    that the rates have been updated. If an error occurs during the update
-    process, a 500 error is returned with the exception message.
-
-    :param request: The HTTP request that triggers the update process.
-    :return: An HttpResponse indicating the success or failure of
-             the operation.
+    :param request: An HttpRequest object.
+    :return: An HttpResponse or JsonResponse with the exchange result or an
+             error message.
     """
 
+    base = request.GET.get('from')
+    target = request.GET.get('to')
+    result = get_current_rate(base)
+
     try:
-        get_and_save_all_rates()
-        status = HttpResponse(
-            'Курсы валют обновлены!',
-            status=200
-        )
-    except Exception as e:
-        status = HttpResponse(
-            f'Во время обновления курсов произошла ошибка: {e}',
-            status=500
+        amount = float(request.GET.get('amount'))
+    except ValueError:
+        return HttpResponse(
+            'Параметр amount заполнен некорректно',
+            status=400
         )
 
-    return status
+    if amount <= 0:
+        return HttpResponse(
+            'Параметр amount не может быть меньше или равен нулю',
+            status=400
+        )
+    elif amount >= MAX_AMOUNT:
+        return HttpResponse(
+            f'Параметр amount не может быть больше '
+            f'или равен {MAX_AMOUNT}',
+            status=400
+        )
+
+    if isinstance(result, HttpResponse):
+        return result
+    else:
+        target_currency_rate = result.get(target)
+
+        if not target_currency_rate:
+            return HttpResponse(
+                'Курсы для валюты для пары: '
+                f'{base}-{target} '
+                'не найдены.',
+                status=404
+            )
+
+        result = target_currency_rate * amount
+
+        if str(result).split('.')[-1] == '0':
+            result = int(result)
+
+        return JsonResponse({'result': result})
