@@ -57,6 +57,7 @@ services:
     container_name: celery-worker-container
     command: celery -A CurrencyConvertor.celery worker -l INFO
     env_file: .env
+    restart: unless-stopped
     depends_on:
       - redis
       - postgres
@@ -69,6 +70,7 @@ services:
     container_name: celery-beat-container
     command: celery -A CurrencyConvertor.celery beat -l INFO
     env_file: .env
+    restart: unless-stopped
     depends_on:
       - redis
       - postgres
