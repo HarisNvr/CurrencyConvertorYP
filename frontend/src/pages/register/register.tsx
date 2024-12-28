@@ -4,8 +4,10 @@ import { initialValues, schemas } from './helper.ts'
 import visibility from '../../assets/svg/visibility.svg'
 import visibilityOff from '../../assets/svg/visibility_off.svg'
 import styles from './register.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 export const Register = () => {
+	const navigate = useNavigate();
 	const [type, setType] = useState('password')
 	const [visibilityIcon, setVisibilityIcon] = useState(visibilityOff)
 
@@ -34,7 +36,7 @@ export const Register = () => {
 				{(props) => (
 					<Form className={`${styles.form}`}>
 						<h2 className={`${styles.h2}`}>Регистрация</h2>
-						<button className={`${styles.button_close}`} type='button'></button>
+						<button className={`${styles.button_close}`} type='button' onClick={()=> navigate('/')}></button>
 						<fieldset className={`${styles.fieldset}`}>
 							<Field
 								className={`${styles.input} ${props.touched.email && props.errors.email && styles.input_error}`}

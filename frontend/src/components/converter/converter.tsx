@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import styles from './converter.module.scss'
 import { CustomSelect } from '../custom-select/custom-select.tsx'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { schemas } from './helper.ts'
 
 export interface MyFormValues {
@@ -10,9 +10,13 @@ export interface MyFormValues {
 	count_to: string
 	count_from: string
 }
-const currencyApi = import.meta.env.VITE_CURRENCY_API_URL
+type DebounceFunction<T extends (...args: any[]) => any> = (
+	func: T,
+	delay: number
+) => (...args: Parameters<T>) => void;
 
 export const Converter = () => {
+	const currencyApi = import.meta.env.VITE_CURRENCY_API_URL
 	const initialValues: MyFormValues = {
 		currency_from: 'RUB',
 		currency_to: 'EUR',
@@ -22,11 +26,39 @@ export const Converter = () => {
 	const [currencyFrom, setCurrencyFrom] = useState(initialValues.currency_from)
 	const [currencyTo, setCurrencyTo] = useState(initialValues.currency_to)
 	const [amount, setAmount] = useState('')
+    const setFieldValueRef = useRef<(field: string, value: any) => void | undefined>(null);
 
 	const handleChangeCurrency = () => {
 		setCurrencyFrom(currencyTo)
 		setCurrencyTo(currencyFrom)
 	}
+
+	const debounce: DebounceFunction<(...args: any[]) => void> = (func, delay) => {
+		let timeoutId: number;
+	
+		return (...args: any[]) => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+			timeoutId = setTimeout(() => {
+				func.apply(null, args);
+			}, delay);
+		};
+	}
+	const fetchConversion = debounce((amount: string) => {
+        if (amount) {
+            fetch(`${currencyApi}/convert/?from=${currencyFrom}&to=${currencyTo}&amount=${amount}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (setFieldValueRef.current) {
+                        setFieldValueRef.current('count_to', parseFloat(data.result.toFixed(3)));
+                    }
+                })
+                .catch((error) => console.error('Ошибка:', error));
+        }
+    },0); 
+
+
 
 	return (
 		<Formik
@@ -36,19 +68,11 @@ export const Converter = () => {
 				console.log(values)
 			}}
 		>
-			{(props) => {
-				useEffect(() => {
-					if (amount) {
-						fetch(
-							`${currencyApi}/convert/?from=${currencyFrom}&to=${currencyTo}&amount=${amount}`
-						)
-							.then((res) => res.json())
-							.then((data) => {
-								props.setFieldValue('count_to', data.result)
-							})
-							.catch((error) => console.error('Ошибка:', error))
-					}
-				}, [amount, currencyFrom, currencyTo, props])
+            {(props) => {
+                setFieldValueRef.current = props.setFieldValue;
+                useEffect(() => {
+                    fetchConversion(amount);
+                }, [amount, currencyFrom, currencyTo]);
 
 				return (
 					<div className={styles.form_container}>
@@ -76,6 +100,9 @@ export const Converter = () => {
 											setAmount(value)
 										}
 									}
+									if (!value) {
+                                        props.setFieldValue('count_to', '');
+                                    }
 								}}
 							/>
 							<ErrorMessage
