@@ -39,17 +39,13 @@ services:
       - postgres
 
   frontend:
-    environment:
-      - CHOKIDAR_USEPOLLING=true
     build: ./frontend/
     command: cp -r /app/dist/. /frontend_static/
-    # volumes:
-    #  - static:/frontend_static
     volumes:
-      - static:/app/dist
+      - static:/frontend_static
     env_file: .env
     depends_on:
-      - postgres
+      - backend
 
   gateway:
     build: ./nginx/
