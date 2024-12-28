@@ -4,8 +4,10 @@ import { initialValues, schemas } from './helper.ts'
 import visibility from '../../assets/svg/visibility.svg'
 import visibilityOff from '../../assets/svg/visibility_off.svg'
 import styles from './login.module.scss'
+import {useNavigate } from 'react-router-dom'
 
 export const Login = () => {
+	const navigate = useNavigate();
 	const [type, setType] = useState('password')
 	const [visibilityIcon, setVisibilityIcon] = useState(visibilityOff)
 
@@ -31,7 +33,7 @@ export const Login = () => {
 			{(props) => (
 				<Form className={`${styles.form}`}>
 					<h2 className={`${styles.h2}`}>Вход</h2>
-					<button className={`${styles.button_close}`} type='button'></button>
+					<button className={`${styles.button_close}`} type='button' onClick={()=> navigate('/')}></button>
 
 					<fieldset className={`${styles.fieldset}`}>
 						<Field

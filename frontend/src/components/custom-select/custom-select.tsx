@@ -16,46 +16,18 @@ export const CustomSelect: FC<TSelect> = memo(({ init, onChange }) => {
 	})
 	const selectRef = useRef<HTMLDivElement>(null)
 	const currencyOptions = [
-		{ value: 'AMD', label: 'AMD', flag: flags.Arm },
-		{ value: 'AUD', label: 'AUD', flag: flags.Aus },
-		{ value: 'AZN', label: 'AZN', flag: flags.Aze },
-		{ value: 'BYN', label: 'BYN', flag: flags.Bel },
-		{ value: 'BRL', label: 'BRL', flag: flags.Bra },
-		{ value: 'BGN', label: 'BGN', flag: flags.Bul },
-		{ value: 'CAD', label: 'CAD', flag: flags.Can },
-		{ value: 'CNY', label: 'CNY', flag: flags.Chi },
-		{ value: 'CZK', label: 'CZK', flag: flags.Cze },
-		{ value: 'DKK', label: 'DKK', flag: flags.Den },
 		{ value: 'EUR', label: 'EUR', flag: flags.EUR },
-		{ value: 'GEL', label: 'GEL', flag: flags.Geo },
-		{ value: 'GBP', label: 'GBP', flag: flags.GB },
-		{ value: 'HKD', label: 'HKD', flag: flags.HK },
-		{ value: 'HUF', label: 'HUF', flag: flags.Hun },
-		{ value: 'INR', label: 'INR', flag: flags.Ind },
-		{ value: 'JPY', label: 'JPY', flag: flags.Jap },
-		{ value: 'KRW', label: 'KRW', flag: flags.Kor },
-		{ value: 'KGS', label: 'KGS', flag: flags.Kyr },
-		{ value: 'LAT', label: 'EUR', flag: flags.Lat },
-		{ value: 'LIT', label: 'EUR', flag: flags.Lit },
-		{ value: 'MDL', label: 'MDL', flag: flags.Mol },
-		{ value: 'NOK', label: 'NOK', flag: flags.Nor },
-		{ value: 'PLN', label: 'PLN', flag: flags.Pol },
-		{ value: 'ZAR', label: 'ZAR', flag: flags.RSA },
-		{ value: 'RON', label: 'RON', flag: flags.Rom },
-		{ value: 'RUB', label: 'RUB', flag: flags.Rus },
-		{ value: 'SGD', label: 'SGD', flag: flags.Sin },
-		{ value: 'SEK', label: 'SEK', flag: flags.Swe },
-		{ value: 'CHF', label: 'CHF', flag: flags.Swi },
-		{ value: 'TJS', label: 'TJS', flag: flags.Tad },
-		{ value: 'THB', label: 'THB', flag: flags.Tha },
-		{ value: 'TRY', label: 'TRY', flag: flags.Tur },
-		{ value: 'TMT', label: 'TMT', flag: flags.Turk },
-		{ value: 'AED', label: 'AED', flag: flags.UAE },
 		{ value: 'USD', label: 'USD', flag: flags.USA },
-		{ value: 'UAH', label: 'UAH', flag: flags.UK },
-		{ value: 'UZS', label: 'UZS', flag: flags.Uzb },
-	]
-
+		{ value: 'RUB', label: 'RUB', flag: flags.Rus },
+		{ value: 'BYN', label: 'BYN', flag: flags.Bel },
+		{ value: 'CHF', label: 'CHF', flag: flags.Swi },
+		{ value: 'CNY', label: 'CNY', flag: flags.Chi },
+		{ value: 'INR', label: 'INR', flag: flags.Ind },
+		{ value: 'GBP', label: 'GBP', flag: flags.GB },
+		{ value: 'TRY', label: 'TRY', flag: flags.Tur },
+		{ value: 'JPY', label: 'JPY', flag: flags.Jap },
+	  ]
+	
 	const handleClickOutside = (event: MouseEvent) => {
 		if (
 			selectRef.current &&
