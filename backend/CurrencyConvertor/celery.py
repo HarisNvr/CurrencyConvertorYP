@@ -3,8 +3,6 @@ from os import environ
 from celery import Celery
 from celery.beat import crontab
 
-from CurrencyConvertor.settings import DEBUG
-
 environ.setdefault('DJANGO_SETTINGS_MODULE', 'CurrencyConvertor.settings')
 app = Celery(
     'celery',
