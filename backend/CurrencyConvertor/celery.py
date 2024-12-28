@@ -15,17 +15,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 app.conf.enable_utc = True
 
-if DEBUG:
-    app.conf.beat_schedule = {
-        'update_rate_every_single_day': {
-            'task': 'api.tasks.update_course_db_task',
-            'schedule': crontab(),
-        },
-    }
-else:
-    app.conf.beat_schedule = {
-        'update_rate_every_single_day': {
-            'task': 'api.tasks.update_course_db_task',
-            'schedule': crontab(minute='30', hour='0', day_of_week='*'),
-        },
-    }
+app.conf.beat_schedule = {
+    'update_rate_every_single_day': {
+        'task': 'api.tasks.update_course_db_task',
+        'schedule': crontab(minute='30', hour='0', day_of_week='*'),
+    },
+}

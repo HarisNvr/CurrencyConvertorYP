@@ -64,7 +64,10 @@ services:
       REDIS_HOST: redis
     build: ./backend/
     container_name: celery-worker-container
-    command: celery -A CurrencyConvertor.celery worker -l INFO
+    command: bash -c "
+        celery -A CurrencyConvertor.celery worker -l INFO
+        && celery -A api call update_course_db_task
+      "
     env_file: .env
     restart: unless-stopped
     depends_on:
