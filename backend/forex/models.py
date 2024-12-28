@@ -8,8 +8,12 @@ class Course(models.Model):
     """
 
     date = models.DateTimeField(
-        verbose_name='Дата запроса курса',
+        verbose_name='Дата актуальности курса',
         auto_now_add=True
+    )
+    date_unix = models.BigIntegerField(
+        verbose_name='Дата актуальности курса в unix-epoch формате',
+        default=int
     )
     rates = models.JSONField(
         verbose_name='Курсы валют',

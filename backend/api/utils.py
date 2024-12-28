@@ -34,7 +34,7 @@ def get_rates(base_currency: str) -> Dict[str, Any]:
     parsed_data = {
         'base_code': data.get('base_code'),
         'conversion_rates': data.get('conversion_rates', {}),
-        'time_last_update_utc': data.get('time_last_update_utc')
+        'time_last_update_unix': data.get('time_last_update_unix')
     }
 
     return parsed_data
@@ -100,12 +100,15 @@ def get_and_save_all_rates() -> None:
     """
 
     course_dict = {}
+    time_last_update_unix = 0
 
     for currency in MAJOR_CURRENCIES:
         parsed_data = get_rates(currency)
 
         base_code = parsed_data['base_code']
         conversion_rates = parsed_data['conversion_rates']
+        time_last_update_unix = parsed_data['time_last_update_unix']
+        print(time_last_update_unix)
 
         save_current_rate(
             currency_name=base_code,
@@ -114,4 +117,7 @@ def get_and_save_all_rates() -> None:
 
         course_dict[base_code] = conversion_rates
 
-    Course.objects.create(rates=course_dict)
+    Course.objects.create(
+        date_unix=time_last_update_unix,
+        rates=course_dict
+    )
