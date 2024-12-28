@@ -1,6 +1,7 @@
-from json import dumps
+from json import dumps, JSONDecodeError, loads
 from typing import Any, Dict
 
+from django.http import HttpResponse
 from redis import Redis
 from requests import get
 
@@ -53,6 +54,38 @@ def save_current_rate(currency_name: str, currency_rate: dict) -> None:
     serialized_rate = dumps(currency_rate)
     redis_client.set(currency_name, serialized_rate)
     redis_client.close()
+
+
+def get_current_rate(currency_name: str) -> HttpResponse | dict:
+    """
+    Fetches the current exchange rates for the specified currency from Redis.
+
+    :param currency_name: The name of the currency for which rates are
+           requested.
+    :return: If successful, a dictionary containing exchange rates with
+             currency codes as keys and their corresponding rates as values.
+             Returns an HttpResponse with status 404 if no rates are found,
+             or 500 if there is an error reading data from Redis.
+    """
+
+    redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
+    rates = redis_client.get(currency_name)
+    redis_client.close()
+
+    if not rates:
+        return HttpResponse(
+            f'Курсы для валюты {currency_name} не найдены.',
+            status=404
+        )
+
+    try:
+        rates = loads(rates.decode())
+    except (UnicodeDecodeError, JSONDecodeError):
+        return HttpResponse(
+            'Ошибка при чтении данных из Redis.', status=500
+        )
+
+    return rates
 
 
 def get_and_save_all_rates() -> None:
