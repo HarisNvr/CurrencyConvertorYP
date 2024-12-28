@@ -42,8 +42,27 @@ git clone git@github.com:HarisNvr/CurrencyConvertorYP.git
 ```
 cd CurrencyConvertor
 ```
-2. Создайте файл .env. Пример находится в корневой директории .env.example
+2. Создайте файл .env. Пример:
+```
+EXCHANGE_RATE_API_KEY=# Ввести ключ API
 
+DEBUG=True
+ENABLE_POSTGRES_DB=True
+TIME_ZONE=Europe/Moscow
+
+POSTGRES_USER=user
+POSTGRES_PASSWORD=pass
+POSTGRES_DB=django
+DB_HOST=localhost
+DB_PORT=5432
+
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_DB=0
+CELERY_REDIS_DB=1
+
+CHOKIDAR_USEPOLLING=true
+```
 ## Запуск проекта
 
 1. Подключитесь к удаленному серверу.
@@ -72,10 +91,12 @@ scp -i path_to_SSH/SSH_name .env username@server_ip:/home/username/CurrencyConve
 ```
 sudo docker compose -f docker-compose.production.yml up -d
 ```
-6. Выполните миграции, соберите статику бэкенда.
+6. Cоберите статику бэкенда.
 7. Отредактируйте конфиг Nginx на сервере, убедитесь в работоспособности и перезапустите Nginx.
 
 ## Проект доступен по адресу: 
+
+URL: http://158.160.138.92:8000/
 
 Release
 0.0.1
