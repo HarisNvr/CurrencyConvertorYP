@@ -1,0 +1,104 @@
+@use '../../styles/variables' as *;
+
+.form {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 616px;
+	margin-block-start: 105px;
+	padding: 40px 32px;
+	background-color: $white;
+	border-radius: 32px;
+}
+
+.h2 {
+	margin-block-end: 40px;
+	font-weight: $font-weight-semi-bold;
+	font-size: $amount-text-size;
+}
+
+.button_close {
+	position: absolute;
+	top: 40px;
+	right: 32px;
+	width: 40px;
+	height: 40px;
+	background: transparent url('../../assets/svg/close-button.svg') no-repeat
+		center / 15px 15px;
+}
+
+.fieldset {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	margin-block-end: 24px;
+}
+
+.input_container {
+	position: relative;
+	width: 100%;
+}
+
+.input {
+	width: 100%;
+	padding: 28px 20px;
+	color: $font-color;
+	font-size: $main-text-size;
+	background-color: $bg-input;
+	border-radius: 16px;
+}
+
+.input_error {
+	color: $price-decrease;
+
+	&::placeholder {
+		color: $price-decrease;
+	}
+}
+
+.error {
+	width: 100%;
+	color: $error-color;
+}
+
+.button_login {
+	width: 100%;
+	padding: 28px;
+	color: $white;
+	font-size: $main-text-size;
+	background-color: $accent-color;
+	border-radius: 16px;
+
+	&:hover {
+		color: $white;
+		background-color: $hover;
+	}
+}
+
+.button_login_disabled {
+	color: $font-color;
+	background-color: $disabled;
+
+	&:hover {
+		color: $font-color;
+		background-color: $disabled;
+		cursor: default;
+	}
+}
+
+.button_visibility {
+	position: absolute;
+	top: 25px;
+	right: 20px;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	background-color: $bg-input;
+}
+
+.visibility_icon {
+	width: 100%;
+}

@@ -1,0 +1,88 @@
+volumes:
+  redis_data:
+  pg_data:
+  static:
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    command: redis-server --appendonly yes --save 60 1 --dir /data
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17
+    container_name: postgresql-container
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  backend:
+    environment:
+      DB_HOST: postgres
+      REDIS_HOST: redis
+    build: ./backend/
+    volumes:
+      - static:/backend_static
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend/
+    command: cp -r /app/dist/. /frontend_static/
+    volumes:
+      - static:/frontend_static
+    env_file: .env
+    depends_on:
+      - backend
+
+  gateway:
+    build: ./nginx/
+    ports:
+      - 8000:80
+    volumes:
+      - static:/staticfiles/
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  celery-worker:
+    environment:
+      DB_HOST: postgres
+      REDIS_HOST: redis
+    build: ./backend/
+    container_name: celery-worker-container
+    command: bash -c "
+        celery -A CurrencyConvertor.celery worker -l INFO
+        && celery -A api call update_course_db_task
+      "
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - postgres
+
+  celery-beat:
+    environment:
+      DB_HOST: postgres
+      REDIS_HOST: redis
+    build: ./backend/
+    container_name: celery-beat-container
+    command: celery -A CurrencyConvertor.celery beat -l INFO
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - postgres
