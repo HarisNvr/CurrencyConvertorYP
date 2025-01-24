@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from forex.models import Course
+from forex.models import ExchangeRate
 
 
 class CourseAdmin(admin.ModelAdmin):
@@ -30,4 +30,4 @@ class CourseAdmin(admin.ModelAdmin):
     short_rates.short_description = 'Currency rates'
 
 
-admin.site.register(Course, CourseAdmin)
+admin.site.register(ExchangeRate, CourseAdmin)

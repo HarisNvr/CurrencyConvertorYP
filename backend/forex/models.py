@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.timezone import localtime
 
 
-class Course(models.Model):
+class ExchangeRate(models.Model):
     """
     The currency history model.
     """

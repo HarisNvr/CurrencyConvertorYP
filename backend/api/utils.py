@@ -8,7 +8,7 @@ from requests import get
 from CurrencyConvertor.settings import (
     API_KEY, BASE_URL, MAJOR_CURRENCIES, REDIS_HOST, REDIS_PORT, REDIS_DB
 )
-from forex.models import Course
+from forex.models import ExchangeRate
 
 
 def get_rates(base_currency: str) -> Dict[str, Any]:
@@ -117,7 +117,7 @@ def get_and_save_all_rates() -> None:
 
         course_dict[base_code] = conversion_rates
 
-    Course.objects.create(
+    ExchangeRate.objects.create(
         date_unix=time_last_update_unix,
         rates=course_dict
     )
