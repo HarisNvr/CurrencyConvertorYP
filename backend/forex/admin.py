@@ -3,6 +3,7 @@ from django.contrib import admin
 from forex.models import ExchangeRate
 
 
+@admin.register(ExchangeRate)
 class CourseAdmin(admin.ModelAdmin):
     """
     Admin configuration for the Course model.
@@ -28,6 +29,3 @@ class CourseAdmin(admin.ModelAdmin):
 
     short_rates.admin_order_field = 'date'
     short_rates.short_description = 'Currency rates'
-
-
-admin.site.register(ExchangeRate, CourseAdmin)
