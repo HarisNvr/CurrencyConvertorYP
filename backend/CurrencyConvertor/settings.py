@@ -102,7 +102,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 STATIC_ROOT = BASE_DIR / 'collected_static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -111,8 +111,11 @@ API_KEY = getenv('EXCHANGE_RATE_API_KEY')
 
 BASE_URL = 'https://v6.exchangerate-api.com/v6'
 
-MAJOR_CURRENCIES = ['EUR', 'USD', 'RUB', 'BYN', 'CHF', 'CNY', 'INR', 'GBP', 'TRY', 'JPY']
 MAX_AMOUNT = 1000000000000
+
+MAJOR_CURRENCIES = [
+    'EUR', 'USD', 'RUB', 'BYN', 'CHF', 'CNY', 'INR', 'GBP', 'TRY', 'JPY'
+]
 
 REDIS_HOST = getenv('REDIS_HOST')
 REDIS_PORT = getenv('REDIS_PORT')
