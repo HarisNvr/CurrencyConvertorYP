@@ -26,8 +26,4 @@ def update_course_db_task() -> None:
     :return: None
     """
     log_to_json("Task update_course_db_task started.")
-    try:
-        get_all_rates()
-        log_to_json("Exchange rates updated successfully.")
-    except Exception as e:
-        log_to_json(f"Error occurred while updating exchange rates: {str(e)}")
+    get_all_rates()
