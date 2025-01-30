@@ -55,9 +55,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CurrencyConvertor.wsgi.application'
 
-
-if getenv('ENABLE_POSTGRES_DB', '').lower() == 'true':
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': getenv('POSTGRES_DB'),
@@ -67,14 +65,6 @@ if getenv('ENABLE_POSTGRES_DB', '').lower() == 'true':
             'PORT': getenv('DB_PORT')
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -90,7 +80,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 LANGUAGE_CODE = 'ru'
 
