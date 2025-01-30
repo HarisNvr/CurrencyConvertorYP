@@ -2,12 +2,9 @@ from json import dumps, JSONDecodeError, loads
 from typing import Any, Dict
 
 from django.http import HttpResponse
-from redis import Redis
 from requests import get
 
-from CurrencyConvertor.settings import (
-    API_KEY, BASE_URL, MAJOR_CURRENCIES, REDIS_HOST, REDIS_PORT, REDIS_DB
-)
+from CurrencyConvertor import settings
 from forex.models import ExchangeRate
 
 
@@ -26,7 +23,7 @@ def get_rates(base_currency: str) -> Dict[str, Any]:
              the last update timestamp.
     """
 
-    api_url = f'{BASE_URL}/{API_KEY}/latest/{base_currency}'
+    api_url = f'{settings.BASE_URL}/{settings.API_KEY}/latest/{base_currency}'
     response = get(api_url)
     response.raise_for_status()
     data = dict(response.json())
@@ -49,11 +46,9 @@ def save_current_rate(currency_name: str, currency_rate: dict) -> None:
                           dictionary.
     """
 
-    redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-
     serialized_rate = dumps(currency_rate)
-    redis_client.set(currency_name, serialized_rate)
-    redis_client.close()
+    settings.REDIS_CLIENT.set(currency_name, serialized_rate)
+    settings.REDIS_CLIENT.close()
 
 
 def get_current_rate(currency_name: str) -> HttpResponse | dict:
@@ -68,9 +63,8 @@ def get_current_rate(currency_name: str) -> HttpResponse | dict:
              or 500 if there is an error reading data from Redis.
     """
 
-    redis_client = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-    rates = redis_client.get(currency_name)
-    redis_client.close()
+    rates = settings.REDIS_CLIENT.get(currency_name)
+    settings.REDIS_CLIENT.close()
 
     if not rates:
         return HttpResponse(
@@ -102,7 +96,7 @@ def get_and_save_all_rates() -> None:
     course_dict = {}
     time_last_update_unix = 0
 
-    for currency in MAJOR_CURRENCIES:
+    for currency in settings.MAJOR_CURRENCIES:
         parsed_data = get_rates(currency)
 
         base_code = parsed_data['base_code']

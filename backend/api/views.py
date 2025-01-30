@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse, HttpRequest
 from django.views.decorators.http import require_GET
 
-from CurrencyConvertor.settings import MAX_AMOUNT
+from CurrencyConvertor import settings
 from api.utils import get_current_rate
 
 
@@ -60,10 +60,10 @@ def convert_currency_view(request: HttpRequest) -> HttpResponse | JsonResponse:
             'Параметр amount не может быть меньше или равен нулю',
             status=400
         )
-    elif amount >= MAX_AMOUNT:
+    elif amount >= settings.MAX_AMOUNT:
         return HttpResponse(
             f'Параметр amount не может быть больше '
-            f'или равен {MAX_AMOUNT}',
+            f'или равен {settings.MAX_AMOUNT}',
             status=400
         )
 

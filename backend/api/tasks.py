@@ -4,12 +4,12 @@ from json import dumps
 from api.utils import get_and_save_all_rates
 from CurrencyConvertor.celery import app
 
-from CurrencyConvertor.settings import LOG_FILE
+from CurrencyConvertor import settings
 
 
 def log_to_json(message):
     log_entry = {"time": datetime.now().isoformat(), "message": message}
-    with open(LOG_FILE, "a") as f:
+    with open(settings.LOG_FILE, "a") as f:
         f.write(dumps(log_entry) + "\n")
 
 
