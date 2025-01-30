@@ -82,7 +82,7 @@ def get_current_rate(currency_name: str) -> HttpResponse | dict:
     return rates
 
 
-def get_and_save_all_rates() -> None:
+def get_all_rates() -> None:
     """
     Fetches and saves exchange rates for all major currencies.
 
@@ -102,7 +102,6 @@ def get_and_save_all_rates() -> None:
         base_code = parsed_data['base_code']
         conversion_rates = parsed_data['conversion_rates']
         time_last_update_unix = parsed_data['time_last_update_unix']
-        print(time_last_update_unix)
 
         save_current_rate(
             currency_name=base_code,

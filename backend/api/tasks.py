@@ -1,7 +1,7 @@
 from datetime import datetime
 from json import dumps
 
-from api.utils import get_and_save_all_rates
+from api.utils import get_all_rates
 from CurrencyConvertor.celery import app
 
 from CurrencyConvertor import settings
@@ -27,7 +27,7 @@ def update_course_db_task() -> None:
     """
     log_to_json("Task update_course_db_task started.")
     try:
-        get_and_save_all_rates()
+        get_all_rates()
         log_to_json("Exchange rates updated successfully.")
     except Exception as e:
         log_to_json(f"Error occurred while updating exchange rates: {str(e)}")
