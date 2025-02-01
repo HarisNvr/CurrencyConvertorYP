@@ -39,11 +39,15 @@ services:
       - postgres
 
   frontend:
-    build: ./frontend/
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
     command: cp -r /app/dist/. /frontend_static/
     volumes:
       - static:/frontend_static
-    env_file: .env
     depends_on:
       - backend
 

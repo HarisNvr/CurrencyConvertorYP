@@ -1,0 +1,80 @@
+@use '../../styles/variables' as *;
+
+.form {
+	display: flex;
+	gap: 20px;
+	background-color: $white;
+	border-radius: 32px;
+
+	&_input {
+		padding: 28px 20px;
+		color: $font-color;
+		font-size: $main-text-size;
+		background-color: $bg-input;
+		border-radius: 16px;
+
+		&::placeholder {
+			color: $placeholder;
+			font-weight: $font-weight-semi-bold;
+			font-size: $amount-text-size;
+		}
+	}
+}
+
+.form_from {
+	position: relative;
+	padding: 100px 82px 100px 52px;
+}
+
+.form_to {
+	position: relative;
+	padding: 100px 52px 100px 82px;
+}
+
+.label {
+	position: absolute;
+	top: 26%;
+	padding-inline-start: 16px;
+	font-weight: $font-weight-medium;
+	font-size: $text-size-small;
+}
+
+.error {
+	position: absolute;
+	top: 65%;
+	width: 100%;
+	padding-inline-start: 16px;
+	color: $error-color;
+}
+
+@media (width<460px) {
+	.form {
+		border-radius: 26px;
+		&_input {
+			font-size: $main-text-size;
+			padding: 20px 14px;
+			border-radius: 12px;
+			width: 100%;
+			&::placeholder {
+				font-size: $main-text-size
+			}
+		}
+	}
+	.form_from {
+		padding: 70px 36px 70px 36px;
+	}
+
+	.form_to {
+		padding: 70px 36px 70px 36px;
+	}
+	.error {
+		top: 67%;
+		font-size: $text-mobile;
+		padding-inline-start: 10px;
+	}
+	.label {
+		top: 22%;
+		padding-inline-start: 10px;
+		font-size: $text-mobile;
+	}
+}

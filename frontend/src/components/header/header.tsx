@@ -9,7 +9,7 @@ export const Header = () => {
 	return (
 		<header className={styles.header}>
 			<Link to='/'>
-				<img src={logo} alt='логотип конвертации' />
+				<img src={logo} alt='логотип конвертации' className={styles.logo} />
 			</Link>
 			<div>
 				{location.pathname === '/' && (

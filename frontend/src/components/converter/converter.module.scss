@@ -1,66 +1,28 @@
 @use '../../styles/variables' as *;
-
-.form {
-	display: flex;
-	gap: 20px;
-	margin-block-end: 20px;
-	background-color: $white;
-	border-radius: 32px;
-
-	&_input {
-		padding: 28px 20px;
-		color: $font-color;
-		font-size: $main-text-size;
-		background-color: $bg-input;
-		border-radius: 16px;
-
-		&::placeholder {
-			color: $placeholder;
-			font-weight: $font-weight-semi-bold;
-			font-size: $amount-text-size;
-		}
-	}
-}
-
-.form_from {
-	padding: 100px 82px 100px 52px;
-}
-
-.form_to {
-	padding: 100px 52px 100px 82px;
-}
-
-.label {
-	position: absolute;
-	top: 72px;
-	padding-inline-start: 16px;
-	font-weight: $font-weight-medium;
-	font-size: $text-size-small;
-}
-
 .form_container {
 	position: relative;
 	display: flex;
 	gap: 20px;
-	margin-block-start: 170px;
 }
-
 .icon {
 	position: absolute;
 	top: 30%;
 	left: 45.7%;
 	z-index: 1000000;
 	cursor: pointer;
-
 	&:hover {
 		fill: $hover;
 	}
 }
 
-.error {
-	position: absolute;
-	top: 65%;
-	width: 100%;
-	padding-inline-start: 16px;
-	color: $error-color;
+@media (width<460px) {
+	.form_container {
+		flex-direction: column;
+	}
+	.icon {
+		position: absolute;
+		top: 38%;
+		left: 40%;
+		width: 80px;
+	}
 }

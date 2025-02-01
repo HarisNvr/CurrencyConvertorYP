@@ -1,10 +1,21 @@
+.page {
+	margin-inline: 120px;
+	display: flex;
+	flex-direction: column;
+	min-width: 360px;
+	height: 100vh;
+}
+
 main {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	max-inline-size: 1440px;
-	margin: 0 auto;
-	margin-block-end: 64px;
-	padding-inline: 120px;
+	height: 100%;
+}
+
+@media (width<460px) {
+	.page {
+		margin-inline: 10px;
+	}
 }

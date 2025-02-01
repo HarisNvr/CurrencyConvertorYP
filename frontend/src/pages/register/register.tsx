@@ -7,7 +7,7 @@ import styles from './register.module.scss'
 import { useNavigate } from 'react-router-dom'
 
 export const Register = () => {
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 	const [type, setType] = useState('password')
 	const [visibilityIcon, setVisibilityIcon] = useState(visibilityOff)
 
@@ -34,17 +34,22 @@ export const Register = () => {
 				}}
 			>
 				{(props) => (
-					<Form className={`${styles.form}`}>
-						<h2 className={`${styles.h2}`}>Регистрация</h2>
-						<button className={`${styles.button_close}`} type='button' onClick={()=> navigate('/')}></button>
-						<fieldset className={`${styles.fieldset}`}>
+					<Form className={styles.form}>
+						<div className={styles.form_header}>
+							<h2 className={styles.form_title}>Регистрация</h2>
+							<button
+								className={styles.form_button_close}
+								type='button'
+								onClick={() => navigate('/')}
+							></button>
+						</div>
+						<fieldset className={styles.fieldset}>
 							<Field
 								className={`${styles.input} ${props.touched.email && props.errors.email && styles.input_error}`}
 								type='email'
 								name='email'
 								placeholder='Email'
 							/>
-
 							<div className={`${styles.input_container}`}>
 								<Field
 									className={`${styles.input} ${props.touched.password && props.errors.password && styles.input_error}`}
@@ -52,45 +57,33 @@ export const Register = () => {
 									name='password'
 									placeholder='Пароль'
 								/>
-								<button
-									className={`${styles.button_visibility}`}
-									type='button'
+								<img
+									className={`${styles.visibility_icon}`}
+									src={visibilityIcon}
 									onClick={handleFieldTypeToggle}
-								>
-									<img
-										className={`${styles.visibility_icon}`}
-										src={visibilityIcon}
-									/>
-								</button>
+								/>
 							</div>
-
-							<div className={`${styles.input_container}`}>
+							<div className={styles.input_container}>
 								<Field
 									className={`${styles.input} ${props.touched.repeat_password && props.errors.repeat_password && styles.input_error}`}
 									type={type}
 									name='repeat_password'
 									placeholder='Повторите пароль'
 								/>
-								<button
-									className={`${styles.button_visibility}`}
-									type='button'
+								<img
+									className={`${styles.visibility_icon}`}
+									src={visibilityIcon}
 									onClick={handleFieldTypeToggle}
-								>
-									<img
-										className={`${styles.visibility_icon}`}
-										src={visibilityIcon}
-									/>
-								</button>
+								/>
 							</div>
-
 							<ErrorMessage
-								className={`${styles.error}`}
+								className={styles.error}
 								name='email'
 								component='div'
 							/>
 							{props.errors.email !== props.errors.password && (
 								<ErrorMessage
-									className={`${styles.error}`}
+									className={styles.error}
 									name='password'
 									component='div'
 								/>
@@ -98,7 +91,7 @@ export const Register = () => {
 							{props.errors.email !== props.errors.repeat_password &&
 								props.errors.password !== props.errors.repeat_password && (
 									<ErrorMessage
-										className={`${styles.error}`}
+										className={styles.error}
 										name='repeat_password'
 										component='div'
 									/>
