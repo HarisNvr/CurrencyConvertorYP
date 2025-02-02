@@ -15,7 +15,6 @@ type DebounceFunction<T extends (...args: any[]) => any> = (
 
 const currencyApi = import.meta.env.VITE_API_URL;
 
-
 export const Converter = () => {
 	const initialValues: MyFormValues = {
 		currency_from: 'RUB',
@@ -60,7 +59,7 @@ export const Converter = () => {
 	const fetchConversion = debounce((amount: string) => {
 		if (amount) {
 			fetch(
-				`${currencyApi}/convert/?from=${currencyFrom}&to=${currencyTo}&amount=${amount}`
+				`${currencyApi}/api/convert/?from=${currencyFrom}&to=${currencyTo}&amount=${amount}`
 			)
 				.then((res) => res.json())
 				.then((data) => {
