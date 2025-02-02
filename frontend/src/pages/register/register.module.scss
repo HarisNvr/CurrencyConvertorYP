@@ -5,33 +5,32 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 616px;
-	margin-block-start: 60px;
 	padding: 40px 32px;
 	background-color: $white;
 	border-radius: 32px;
-}
-
-.h2 {
-	margin-block-end: 40px;
-	font-weight: $font-weight-semi-bold;
-	font-size: $amount-text-size;
-}
-
-.button_close {
-	position: absolute;
-	top: 40px;
-	right: 32px;
-	width: 40px;
-	height: 40px;
-	background: transparent url('../../assets/svg/close-button.svg') no-repeat
-		center / 15px 15px;
+	&_header {
+		display: flex;
+		width: 100%;
+		gap: 150px;
+		align-items: center;
+		justify-content: end;
+		margin-block-end: 34px;
+	}
+	&_title {
+		font-weight: $font-weight-semi-bold;
+		font-size: $amount-text-size;
+	}
+	&_button_close {
+		width: 40px;
+		height: 40px;
+		background: transparent url('../../assets/svg/close-button.svg') no-repeat
+			center / 15px 15px;
+	}
 }
 
 .fieldset {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	gap: 8px;
 	width: 100%;
 	margin-block-end: 24px;
@@ -39,7 +38,6 @@
 
 .input_container {
 	position: relative;
-	width: 100%;
 }
 
 .input {
@@ -53,25 +51,23 @@
 
 .input_error {
 	color: $price-decrease;
-
 	&::placeholder {
 		color: $price-decrease;
 	}
 }
 
 .error {
-	width: 100%;
+	font-size: $text-size-small;
 	color: $error-color;
 }
 
 .button_register {
 	width: 100%;
-	padding: 28px;
+	padding: 28px 172px;
 	color: $white;
 	font-size: $main-text-size;
 	background-color: $accent-color;
 	border-radius: 16px;
-
 	&:hover {
 		color: $white;
 		background-color: $hover;
@@ -81,7 +77,6 @@
 .button_register_disabled {
 	color: $font-color;
 	background-color: $disabled;
-
 	&:hover {
 		color: $font-color;
 		background-color: $disabled;
@@ -89,7 +84,7 @@
 	}
 }
 
-.button_visibility {
+.visibility_icon {
 	position: absolute;
 	top: 25px;
 	right: 20px;
@@ -97,8 +92,46 @@
 	height: 28px;
 	padding: 0;
 	background-color: $bg-input;
+	cursor: pointer;
 }
 
-.visibility_icon {
-	width: 100%;
+@media (width<460px) {
+	.form {
+		padding: 36px 30px;
+		border-radius: 26px;
+		&_header {
+			gap: 50px;
+			margin-block-end: 28px;
+		}
+		&_title {
+			font-size: $rate-text-size;
+		}
+		&_button_close {
+			width: 27px;
+			height: 27px;
+		}
+	}
+	.fieldset {
+		margin-block-end: 16px;
+	}
+	.button_register {
+		padding: 20px 75px;
+		font-size: $text-size-small;
+		border-radius: 12px;
+	}
+
+	.input {
+		padding: 20px 16px;
+		font-size: $text-size-small;
+		border-radius: 12px;
+	}
+	.visibility_icon {
+		top: 20px;
+		right: 16px;
+		width: 22px;
+		height: 22px;
+	}
+	.error {
+		font-size: $text-mobile;
+	}
 }

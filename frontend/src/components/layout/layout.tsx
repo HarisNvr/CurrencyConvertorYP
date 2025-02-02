@@ -5,12 +5,12 @@ import { Outlet } from 'react-router-dom'
 
 export const Layout = () => {
 	return (
-		<>
+		<div className={styles.page}>
 			<Header />
 			<main className={styles.main}>
 				{' '}
 				<Outlet />
 			</main>
-		</>
+		</div>
 	)
 }

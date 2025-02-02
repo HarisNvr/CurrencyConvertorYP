@@ -39,11 +39,10 @@ services:
       - postgres
 
   frontend:
-    build: ./frontend/
+    build: ./frontend
     command: cp -r /app/dist/. /frontend_static/
     volumes:
       - static:/frontend_static
-    env_file: .env
     depends_on:
       - backend
 

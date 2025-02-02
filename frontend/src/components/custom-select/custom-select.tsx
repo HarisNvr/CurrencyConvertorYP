@@ -26,8 +26,8 @@ export const CustomSelect: FC<TSelect> = memo(({ init, onChange }) => {
 		{ value: 'GBP', label: 'GBP', flag: flags.GB },
 		{ value: 'TRY', label: 'TRY', flag: flags.Tur },
 		{ value: 'JPY', label: 'JPY', flag: flags.Jap },
-	  ]
-	
+	]
+
 	const handleClickOutside = (event: MouseEvent) => {
 		if (
 			selectRef.current &&
@@ -42,25 +42,30 @@ export const CustomSelect: FC<TSelect> = memo(({ init, onChange }) => {
 		if (initialValue) {
 			setValue(initialValue)
 		}
-		document.addEventListener('mousedown', handleClickOutside)
+	}, [init])
+
+	useEffect(() => {
+		if (isOpen) {
+			document.addEventListener('mousedown', handleClickOutside)
+		}
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
 		}
-	}, [init])
+	}, [isOpen])
 
 	const handleSelectChange = (item: any) => {
 		setValue(item)
 		if (onChange) {
 			onChange(item.value)
 		}
+		setIsOpen(false)
 	}
 	return (
-		<div
-			className={`${styles.select} ${isOpen ? styles.select_open : ''}`}
-			ref={selectRef}
-			onClick={() => setIsOpen((prev) => !prev)}
-		>
-			<div className={styles.select_container}>
+		<div className={`${styles.select} ${isOpen ? styles.select_open : ''}`}>
+			<div
+				className={styles.select_container}
+				onClick={() => setIsOpen((prev) => !prev)}
+			>
 				<div className={styles.select_container_item}>
 					<img
 						src={value.flag}
@@ -68,13 +73,14 @@ export const CustomSelect: FC<TSelect> = memo(({ init, onChange }) => {
 						alt='флаг страны'
 					/>
 					<span className={styles.select_container_item_label}>
-						{value.label}{' '}
+						{value.label || 'Выберите валюту'}
 					</span>
 				</div>
-				<img src={arrow}></img>
+				<img src={arrow} alt='стрелка' />
 			</div>
 			<div
-				className={`${styles.options} ${isOpen ? styles.options_open : ''} `}
+				className={`${styles.options} ${isOpen ? styles.options_open : ''}`}
+				ref={selectRef}
 			>
 				{currencyOptions.map((item) => (
 					<div
@@ -88,7 +94,6 @@ export const CustomSelect: FC<TSelect> = memo(({ init, onChange }) => {
 							alt='флаг страны'
 						/>
 						<span className={styles.select_container_item_label}>
-							{' '}
 							{item.label}
 						</span>
 					</div>

@@ -2,7 +2,6 @@
 
 .select {
 	position: relative;
-	width: 152px;
 	padding: 26px 16px;
 	color: $font-color;
 	font-size: $main-text-size;
@@ -19,6 +18,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		gap: 12px;
 
 		&_item {
 			display: flex;
@@ -46,7 +46,7 @@
 
 .options {
 	position: absolute;
-	top: 100%; /* Позиционируем под контейнером */
+	top: 100%;
 	left: 0;
 	z-index: 100;
 	display: none;
@@ -88,4 +88,30 @@
 
 .options::-webkit-scrollbar-thumb:hover {
 	background-color: $placeholder;
+}
+
+@media (width<460px) {
+	.select {
+		padding: 20px 14px;
+		font-size: $text-mobile;
+		border-radius: 12px;
+		flex: 1 0 50px;
+		&_container {
+			gap: 8px;
+			&_item {
+				gap: 8px;
+				&_flag {
+					width: 20px;
+					height: 20px;
+					border-radius: 20px;
+				}
+				&_label {
+					font-size: $text-mobile;
+				}
+			}
+		}
+	}
+	.options {
+		max-height: 135px;
+	}
 }

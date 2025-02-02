@@ -19,16 +19,16 @@ Currency-converter — это веб-приложение, предназнач�
 
 ## Команда:
 
-| Участник                                                           | Роль                               | Контакты                                                      |
-|--------------------------------------------------------------------|------------------------------------|---------------------------------------------------------------|
-| ![HarisNvr](https://github.com/HarisNvr.png?size=75)               | ТимЛид, Python-разработчик, DevOps | GitHub: [HarisNvr](https://github.com/HarisNvr)               |
-| ![AnnPavlova03](https://github.com/AnnPavlova03.png?size=75)       | Старший Frontend-разработчик       | GitHub: [AnnPavlova03](https://github.com/AnnPavlova03)       |
-| ![sashakostiukova](https://github.com/sashakostiukova.png?size=75) | Frontend-разработчик               | GitHub: [sashakostiukova](https://github.com/sashakostiukova) |
-| ![vyalko](https://github.com/vyalko.png?size=75)                   | Python-разработчик                 | GitHub: [vyalko](https://github.com/vyalko)                   |
-| ![GagarinRu](https://github.com/GagarinRu.png?size=75)             | Python-разработчик                 | GitHub: [GagarinRu](https://github.com/GagarinRu)             |
-| Bant0n (Антон)                                                     | Python-разработчик                 | GitHub: [Bant0n](https://github.com/Bant0n)                   |
-| Spo1ler0 (Сергей)                                                  | Дизайнер                           | TG: [Spo1ler0](https://t.me/Spo1ler0)                         |
-| ma_ksn (Мария)                                                     | Дизайнер                           | TG: [ma_ksn](https://t.me/ma_ksn)                             |
+| Участник                                                           | Роль                                | Контакты                                                      |
+|--------------------------------------------------------------------|-------------------------------------|---------------------------------------------------------------|
+| ![HarisNvr](https://github.com/HarisNvr.png?size=75)               | ТимЛид, Backend-разработчик, DevOps | GitHub: [HarisNvr](https://github.com/HarisNvr)               |
+| ![AnnPavlova03](https://github.com/AnnPavlova03.png?size=75)       | Старший Frontend-разработчик        | GitHub: [AnnPavlova03](https://github.com/AnnPavlova03)       |
+| ![sashakostiukova](https://github.com/sashakostiukova.png?size=75) | Frontend-разработчик                | GitHub: [sashakostiukova](https://github.com/sashakostiukova) |
+| ![vyalko](https://github.com/vyalko.png?size=75)                   | Backend-разработчик                 | GitHub: [vyalko](https://github.com/vyalko)                   |
+| ![GagarinRu](https://github.com/GagarinRu.png?size=75)             | Backend-разработчик                 | GitHub: [GagarinRu](https://github.com/GagarinRu)             |
+| Bant0n (Антон)                                                     | Backend-разработчик                 | GitHub: [Bant0n](https://github.com/Bant0n)                   |
+| Spo1ler0 (Сергей)                                                  | Дизайнер                            | TG: [Spo1ler0](https://t.me/Spo1ler0)                         |
+| ma_ksn (Мария)                                                     | Дизайнер                            | TG: [ma_ksn](https://t.me/ma_ksn)                             |
 
 ## Используемый стек Backend
 
@@ -44,7 +44,7 @@ Currency-converter — это веб-приложение, предназнач�
 
 * **React**
 * **TypeScript**
-* **CSS**
+* **SCSS**
 
 ## Используемый стек Design
 
@@ -96,8 +96,7 @@ Currency-converter — это веб-приложение, предназнач�
     ```    
 
 ## TO-DO:
-1. Исправить "слепоту" frontend по поводу .env файла, который подгружается через docker-compose.yml
-2. Добавить удалённый функционал личных кабинетов.
-3. Добавить удалённый функционал графика истории курсов.
-4. Исправить работу статики Django-admin.
-5. Покрыть проект тестами.
+1. Добавить удалённый функционал личных кабинетов.
+2. Добавить удалённый функционал графика истории курсов.
+3. Исправить работу статики Django-admin.
+4. Покрыть проект тестами.

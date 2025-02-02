@@ -4,10 +4,11 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	min-height: 200px;
-	padding-inline: 120px;
+	padding-block: clamp(2rem, 1.0612rem + 3.2653vw, 4rem);
 }
-
+.logo {
+	width: 100%;
+}
 .button {
 	padding: 24px;
 	font-size: $main-text-size;
@@ -24,4 +25,15 @@
 	margin-inline-start: 20px;
 	color: $white;
 	background-color: $accent-color;
+}
+
+@media (width<460px) {
+	.button {
+		font-size: $text-size-small;
+		padding: 16px;
+		border-radius: 12px;
+	}
+	.logo {
+		width: 80%;
+	}
 }

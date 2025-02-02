@@ -4,10 +4,10 @@ import { initialValues, schemas } from './helper.ts'
 import visibility from '../../assets/svg/visibility.svg'
 import visibilityOff from '../../assets/svg/visibility_off.svg'
 import styles from './login.module.scss'
-import {useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const Login = () => {
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 	const [type, setType] = useState('password')
 	const [visibilityIcon, setVisibilityIcon] = useState(visibilityOff)
 
@@ -31,11 +31,16 @@ export const Login = () => {
 			}}
 		>
 			{(props) => (
-				<Form className={`${styles.form}`}>
-					<h2 className={`${styles.h2}`}>Вход</h2>
-					<button className={`${styles.button_close}`} type='button' onClick={()=> navigate('/')}></button>
-
-					<fieldset className={`${styles.fieldset}`}>
+				<Form className={styles.form}>
+					<div className={styles.form_header}>
+						<h2 className={styles.form_title}>Вход</h2>
+						<button
+							className={styles.form_button_close}
+							type='button'
+							onClick={() => navigate('/')}
+						></button>
+					</div>
+					<fieldset className={styles.fieldset}>
 						<Field
 							className={`${styles.input} ${props.touched.email && props.errors.email && styles.input_error}`}
 							type='email'
@@ -43,27 +48,22 @@ export const Login = () => {
 							placeholder='Email'
 						/>
 
-						<div className={`${styles.input_container}`}>
+						<div className={styles.input_container}>
 							<Field
 								className={`${styles.input} ${props.touched.password && props.errors.password && styles.input_error}`}
 								type={type}
 								name='password'
 								placeholder='Пароль'
 							/>
-							<button
-								className={`${styles.button_visibility}`}
-								type='button'
+							<img
+								className={styles.visibility_icon}
+								src={visibilityIcon}
 								onClick={handleFieldTypeToggle}
-							>
-								<img
-									className={`${styles.visibility_icon}`}
-									src={visibilityIcon}
-								/>
-							</button>
+							/>
 						</div>
 
 						<ErrorMessage
-							className={`${styles.error}`}
+							className={styles.error}
 							name='email'
 							component='div'
 						/>
