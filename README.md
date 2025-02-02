@@ -88,8 +88,6 @@ Currency-converter — это веб-приложение, предназнач�
     REDIS_PORT=6379
     REDIS_DB=0
     CELERY_REDIS_DB=1
-
-    VITE_API_URL=<Ваш api адрес>
     ```
 
 3. Запустите сборку Docker-compose:

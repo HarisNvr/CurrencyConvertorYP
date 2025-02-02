@@ -13,7 +13,14 @@ interface CurrencyFormProps {
 }
 
 export const CurrencyForm: React.FC<CurrencyFormProps> = React.memo(
-	({ label, fieldName, currency, setCurrency, amount, setAmount }) => {
+	({
+		label,
+		fieldName,
+		currency,
+		setCurrency,
+		amount,
+		setAmount,
+	}) => {
 		const [error, setError] = React.useState<string | null>(null)
 		const validateAmount = (value: string) => {
 			schemas
@@ -32,7 +39,7 @@ export const CurrencyForm: React.FC<CurrencyFormProps> = React.memo(
 					className={styles.form_input}
 					type='number'
 					name={fieldName}
-					placeholder='1'
+					placeholder={'1'}
 					value={amount}
 					onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
 						if (
@@ -41,7 +48,8 @@ export const CurrencyForm: React.FC<CurrencyFormProps> = React.memo(
 							event.key !== 'Delete' &&
 							event.key !== 'ArrowLeft' &&
 							event.key !== 'ArrowRight' &&
-							event.key !== 'Tab'
+							event.key !== 'Tab' &&
+							event.key !== '.'
 						) {
 							event.preventDefault()
 						}
@@ -55,6 +63,7 @@ export const CurrencyForm: React.FC<CurrencyFormProps> = React.memo(
 								setAmount?.(value)
 							}
 							validateAmount(value)
+						
 						}
 					}}
 				/>

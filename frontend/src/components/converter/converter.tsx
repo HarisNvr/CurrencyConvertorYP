@@ -13,19 +13,11 @@ type DebounceFunction<T extends (...args: any[]) => any> = (
 	delay: number
 ) => (...args: Parameters<T>) => void
 
-const currencyApi = import.meta.env.VITE_API_URL;
-
 export const Converter = () => {
-	const initialValues: MyFormValues = {
-		currency_from: 'RUB',
-		currency_to: 'EUR',
-		count_to: '',
-		count_from: '',
-	}
-	const [currencyFrom, setCurrencyFrom] = useState(initialValues.currency_from)
-	const [currencyTo, setCurrencyTo] = useState(initialValues.currency_to)
+	const [currencyFrom, setCurrencyFrom] = useState('RUB')
+	const [currencyTo, setCurrencyTo] = useState('EUR')
 	const [amount, setAmount] = useState('')
-	const [convertedAmount, setConvertedAmount] = useState('');
+	const [convertedAmount, setConvertedAmount] = useState('')
 
 	const handleChangeCurrencyFrom = useCallback((newCurrency: string) => {
 		setCurrencyFrom(newCurrency)
@@ -59,14 +51,19 @@ export const Converter = () => {
 	const fetchConversion = debounce((amount: string) => {
 		if (amount) {
 			fetch(
-				`${currencyApi}/api/convert/?from=${currencyFrom}&to=${currencyTo}&amount=${amount}`
+				`/api/convert/?from=${currencyFrom}&to=${currencyTo}&amount=${amount}`
 			)
 				.then((res) => res.json())
 				.then((data) => {
-					setConvertedAmount((data.result.toFixed(3)))})
+					const result = data.result.toFixed(3)
+					setConvertedAmount(result)
+				})
+
 				.catch((error) => console.error('Ошибка:', error))
 		}
 	}, 200)
+
+
 	useEffect(() => {
 		fetchConversion(amount)
 	}, [amount, currencyFrom, currencyTo])
@@ -110,7 +107,7 @@ export const Converter = () => {
 				fieldName='count_to'
 				currency={currencyTo}
 				setCurrency={handleChangeCurrencyTo}
-				amount={convertedAmount}
+				amount={amount === '' ? '' : convertedAmount}
 			/>
 		</div>
 	)
