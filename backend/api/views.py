@@ -55,9 +55,9 @@ def convert_currency_view(request: HttpRequest) -> HttpResponse | JsonResponse:
             status=400
         )
 
-    if amount <= 0:
+    if amount < 0:
         return HttpResponse(
-            'Параметр amount не может быть меньше или равен нулю',
+            'Параметр amount не может быть меньше нуля',
             status=400
         )
     elif amount >= settings.MAX_AMOUNT:
