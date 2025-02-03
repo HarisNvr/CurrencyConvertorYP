@@ -47,8 +47,9 @@ def save_current_rate(currency_name: str, currency_rate: dict) -> None:
     """
 
     serialized_rate = dumps(currency_rate)
-    settings.REDIS_CLIENT.set(currency_name, serialized_rate)
-    settings.REDIS_CLIENT.close()
+
+    with settings.REDIS_CLIENT as redis:
+        redis.set(currency_name, serialized_rate)
 
 
 def get_current_rate(currency_name: str) -> HttpResponse | dict:
@@ -63,8 +64,8 @@ def get_current_rate(currency_name: str) -> HttpResponse | dict:
              or 500 if there is an error reading data from Redis.
     """
 
-    rates = settings.REDIS_CLIENT.get(currency_name)
-    settings.REDIS_CLIENT.close()
+    with settings.REDIS_CLIENT as redis:
+        rates = redis.get(currency_name)
 
     if not rates:
         return HttpResponse(
